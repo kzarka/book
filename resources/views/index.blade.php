@@ -25,8 +25,6 @@
         <div class="sj-book">
             <div depth="5" class="hard"> <div class="side"></div> </div>
             <div depth="5" class="hard front-side"> <div class="depth"></div> </div>
-            <div class="own-size"></div>
-            <div class="own-size even"></div>
             <div class="hard fixed back-side p51 plast1"> <div class="depth"></div> </div>
             <div class="hard p52 plast2"></div>
         </div>

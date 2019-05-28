@@ -165,7 +165,6 @@ function loadApp() {
                 }
 
                 updateDepth(book, page);
-                console.log(pages);
                 
                 if (page>=2)
                     $('.sj-book .p2').addClass('fixed');
