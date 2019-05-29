@@ -28,12 +28,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public static function getName($id = null) {
+        $user = self::select('first_name', 'last_name')
+            ->where('id', $id)
+            ->first();
+        return $user['first_name'] . ' ' . $user['last_name'];
+    }
 }

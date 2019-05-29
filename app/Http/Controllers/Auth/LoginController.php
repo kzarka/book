@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Cartalyst\Sentinel\Native\Facades\Sentinel;
 
 class LoginController extends Controller
 {
@@ -18,22 +18,35 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function login(Request $request)
     {
-        $this->middleware('guest')->except('logout');
+        $method = $request->method();
+        if($method == 'GET') {
+            return view('auth.login');
+        }
+        try {
+            $remember = (bool) $request->get('remember', false);
+            if (Sentinel::authenticate($request->all(), $remember)) {
+                return redirect()->route('admin_dashboard');
+            } else {
+                $err = "Tên đăng nhập hoặc mật khẩu không đúng!";
+            }
+        } catch (NotActivatedException $e) {
+            $err = "Tài khoản của bạn chưa được kích hoạt";
+        } catch (ThrottlingException $e) {
+            $delay = $e->getDelay();
+            $err = "Tài khoản của bạn bị block trong vòng {$delay} sec";
+        }
+        return redirect()->back()
+            ->withInput()
+            ->with('err', $err);
+    }
+
+    public function logout()
+    {
+        $user = Sentinel::getUser();
+        \Log::info($user);
+        Sentinel::logout($user, true);
+        return redirect()->route('home');
     }
 }

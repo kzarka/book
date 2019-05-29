@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Cartalyst\Sentinel\Native\Facades\Sentinel;
 
 class RedirectIfAuthenticated
 {
@@ -17,8 +18,8 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+        if (Sentinel::check()) {
+            return redirect()->route('admin_dashboard');
         }
 
         return $next($request);
