@@ -1,0 +1,17 @@
+.page-size {
+	width: 460px;
+	height: 582px;
+}
+
+/* Large devices (laptops/desktops, 1400px and up) */
+@media only screen and (min-width: 1400px) {
+	.page-size {
+		width: 640px;
+		height: 810px;
+	}
+
+	#canvas {
+		width: 750px;
+		height: 1200px;
+	}
+} 
